@@ -146,6 +146,8 @@ class Conode(Host):
 
         args = "-debug %s -address %s:2000 -simul %s -suite %s" % (debugLvl, self.IP(), self.simul, self.suite)
         if True:
+            # IMPORTANT: To make it work with the DEDIS server
+            global_root = "10.156.33.198"
             args += " -monitor %s:10000" % global_root
         ldone = ""
         # When the first conode on a physical server ends, tell `start.py`
@@ -153,6 +155,8 @@ class Conode(Host):
         if self.IP().endswith(".0.2"):
             ldone = "; date > " + logdone
         dbg( 3, "Starting conode on node", self.IP(), args, ldone, socat )
+        #self.cmd('( %s ./conode %s 2>&1 %s ) >> /tmp/linus.log &' %
+        #             (debugStr, args, ldone))
         self.cmd('( %s ./conode %s 2>&1 %s ) | %s &' %
                      (debugStr, args, ldone, socat ))
 

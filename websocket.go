@@ -287,8 +287,8 @@ outerReadLoop:
 		if !isStreaming {
 			reply, _, err = s.ProcessClientRequest(r, path, buf)
 			if err != nil {
-				log.Errorf("Got an error while executing %s/%s: %+v",
-					t.serviceName, path, err)
+				//log.Errorf("Got an error while executing %s/%s: %+v",
+				//	t.serviceName, path, err)
 				continue
 			}
 

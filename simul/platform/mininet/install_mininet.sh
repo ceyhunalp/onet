@@ -39,7 +39,7 @@ case "$( cat /etc/issue )" in
 *20.04*)
     echo "Installing for Ubuntu 20.04"
     # Mininet installation
-    git clone git://github.com/mininet/mininet
+    git clone https://github.com/mininet/mininet
     cd mininet || exit 1
     ./util/install.sh -a
     apt install -y openvswitch-testcontroller python-is-python3
