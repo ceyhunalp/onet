@@ -101,6 +101,7 @@ class BaseRouter(Node):
         if runSSHD:
             self.cmd('/usr/sbin/sshd -D &')
 
+        # self.cmd('sudo sysctl -p > /tmp/cey.log')
         self.cmd( 'sysctl net.ipv4.ip_forward=1' )
         self.cmd( 'iptables -t nat -I POSTROUTING -j MASQUERADE' )
         socat = "socat OPEN:%s,creat,append %s:%d,reuseaddr,fork" % (logfile, socatRcv, socatPort)
@@ -362,3 +363,5 @@ if __name__ == '__main__':
         thr.join()
 
     dbg( 2, "Done with main in %s" % platform.node())
+
+    call('pkill -9 -f "ExitOnForward"', shell=True)

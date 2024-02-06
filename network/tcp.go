@@ -15,7 +15,8 @@ import (
 
 // a connection will return an io.EOF after networkTimeout if nothing has been
 // received. sends and connects will timeout using this timeout as well.
-var timeout = 1 * time.Minute
+//var timeout = 1 * time.Minute
+var timeout = 10 * time.Minute
 
 // dialTimeout is the timeout for connecting to an end point. This is much
 // lower than the normal read timeout.

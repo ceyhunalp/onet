@@ -344,14 +344,44 @@ func (m *MiniNet) Start(args ...string) error {
 	if err := exCmd.Wait(); err != nil {
 		log.Fatal("ssh port forwarding exited in failure:", err)
 	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+	log.Fatal(err)
+	}
+	fullPath := filepath.Join(cwd, "input")
+	if _, err := os.Stat(fullPath); err == nil {
+		if !os.IsExist(err) {
+			cmd = []string{"-r", fullPath, "root@dedis-198.icsil1.epfl.ch:"}
+			exCmd = exec.Command("scp", cmd...)
+			if err := exCmd.Start(); err != nil {
+				log.Fatal("Failed to scp input files:", err)
+			}
+			if err := exCmd.Wait(); err != nil {
+				log.Fatal("scp exited in failure:", err)
+			}
+		}
+	}
 	go func() {
+		//err := SSHRunStdout(m.Login, m.External, "sudo sysctl -p")
+		//if err != nil {
+		//log.Lvl3(err)
+		//}
 		config := strings.Split(m.config, "\n")
 		sort.Strings(config)
 		err := SSHRunStdout(m.Login, m.External, "cd mininet_run; ./start.py list go")
 		if err != nil {
 			log.Lvl3(err)
 		}
+		err = SSHRunStdout(m.Login, m.External, "rm -rfv input mininet_run")
+		if err != nil {
+			log.Lvl3(err)
+		}
 		m.sshMininet <- "finished"
+		err = exec.Command("pkill", "-f", "--", "-nNTf").Run()
+		if err != nil {
+			log.Lvl2("Error stopping ssh:", err)
+		}
 	}()
 
 	return nil

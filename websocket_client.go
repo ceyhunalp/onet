@@ -45,11 +45,12 @@ type Client struct {
 // connection will be started, until Close is called.
 func NewClient(suite network.Suite, s string) *Client {
 	return &Client{
-		service:          s,
-		connections:      make(map[destination]*websocket.Conn),
-		connectionsLock:  make(map[destination]*sync.Mutex),
-		suite:            suite,
-		ReadTimeout:      time.Second * 60,
+		service:         s,
+		connections:     make(map[destination]*websocket.Conn),
+		connectionsLock: make(map[destination]*sync.Mutex),
+		suite:           suite,
+		//ReadTimeout:      time.Second * 60,
+		ReadTimeout:      time.Second * 1200,
 		HandshakeTimeout: time.Second * 5,
 	}
 }
@@ -544,7 +545,7 @@ func (c *Client) closeConn(dst destination) error {
 		err := conn.WriteMessage(websocket.CloseMessage,
 			websocket.FormatCloseMessage(websocket.CloseNormalClosure, "client closed"))
 		if err != nil {
-			log.Error("Error while sending closing type:", err)
+			//log.Error("Error while sending closing type:", err)
 		}
 		return conn.Close()
 	}

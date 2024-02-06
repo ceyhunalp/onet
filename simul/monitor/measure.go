@@ -57,8 +57,8 @@ type singleMeasure struct {
 // time, the cpu time + the user time.
 type TimeMeasure struct {
 	Wall *singleMeasure
-	CPU  *singleMeasure
-	User *singleMeasure
+	//CPU  *singleMeasure
+	//User *singleMeasure
 	// non exported fields
 	// name of the time measure (basename)
 	name string
@@ -141,11 +141,11 @@ func (tm *TimeMeasure) Record() {
 	// Wall time measurement
 	tm.Wall = newSingleMeasureWithHost(tm.name+"_wall", float64(time.Since(tm.lastWallTime))/1.0e9, tm.host)
 	// CPU time measurement
-	tm.CPU.Value, tm.User.Value = getDiffRTime(tm.CPU.Value, tm.User.Value)
+	//tm.CPU.Value, tm.User.Value = getDiffRTime(tm.CPU.Value, tm.User.Value)
 	// send data
 	tm.Wall.Record()
-	tm.CPU.Record()
-	tm.User.Record()
+	//tm.CPU.Record()
+	//tm.User.Record()
 	// reset timers
 	tm.reset()
 
@@ -153,9 +153,9 @@ func (tm *TimeMeasure) Record() {
 
 // reset reset the time fields of this time measure
 func (tm *TimeMeasure) reset() {
-	cpuTimeSys, cpuTimeUser := getRTime()
-	tm.CPU = newSingleMeasureWithHost(tm.name+"_system", cpuTimeSys, tm.host)
-	tm.User = newSingleMeasureWithHost(tm.name+"_user", cpuTimeUser, tm.host)
+	//cpuTimeSys, cpuTimeUser := getRTime()
+	//tm.CPU = newSingleMeasureWithHost(tm.name+"_system", cpuTimeSys, tm.host)
+	//tm.User = newSingleMeasureWithHost(tm.name+"_user", cpuTimeUser, tm.host)
 	tm.lastWallTime = time.Now()
 }
 
